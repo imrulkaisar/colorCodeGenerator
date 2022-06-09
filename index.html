@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Code Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main id="root">
+        <div class="container">
+            <div class="controls">
+                <div class="topbar">
+                    <h4 class="heading">Display Color</h4>
+                    <button id="generateNewColor" class="button">Generate Color</button>
+                </div>
+                <div class="" id="preview">
+                    <div class="message">Message</div>
+                </div>
+                <div class="colorCodes">
+                    <p class="hex-code">HEX CODE: #333333 <span id="copy-hex" class="copy"><img src="./src/copy.png" alt="copy" srcset=""></span></p>
+                    <p class="rgb-code">RGB CODE: rgb(51,51,51) <span id="copy-rgb" class="copy"><img src="./src/copy.png" alt="copy" srcset=""></span></p>
+                    <p><button id="save-preset" class="button">Save as Preset</button></p>
+                </div>
+            </div>
+            <div class="input-area">
+                <div class="hex-input-area">
+                    <label for="hex-input">Input HEX Code</label>
+                    <input type="text" id="hex-input" class="input" maxlength="7">
+                </div>
+                <div class="rgb-slides">
+                    <div class="slide">
+                        <label for="red">
+                            <span class="title">Red</span>
+                            <span class="value">234</span>
+                        </label>
+                        <input 
+                        type="range" 
+                        name="red" 
+                        id="red"
+                        min="0"
+                        max="255"
+                        value="234"
+                        >
+                    </div>
+                    <div class="slide">
+                        <label for="green">
+                            <span class="title">Green</span>
+                            <span class="value">54</span>
+                        </label>
+                        <input 
+                        type="range" 
+                        name="green" 
+                        id="green"
+                        min="0"
+                        max="255"
+                        value="54"
+                        >
+                    </div>
+                    <div class="slide">
+                        <label for="blue">
+                            <span class="title">Blue</span>
+                            <span class="value">124</span>
+                        </label>
+                        <input 
+                        type="range" 
+                        name="blue" 
+                        id="blue"
+                        min="0"
+                        max="255"
+                        value="124"
+                        >
+                    </div>
+                </div>
+            </div>
+            <div class="presets">
+                <h4 class="heading">Presets:</h4>
+            </div>
+        </div>
+    </main>
+
+    <script src="./app.js"></script>
+</body>
+</html>

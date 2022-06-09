@@ -1,0 +1,115 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.button {
+    border: none;
+    color: #0437ed;
+    background-color: transparent;
+}
+.button:hover {
+    cursor: pointer;
+    color: #000000;
+    text-decoration: underline;
+}
+#root {
+    background-color: #333333;
+    display: grid;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    justify-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 600px;
+    width: 60vw;
+    padding: 20px;
+    background-color: #f2f2f2;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.container > div {
+    border: 1px solid #acacac;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.heading {
+    font-size: 24px;
+    font-weight: 500;
+    color: #333333;
+}
+
+#preview {
+    height: 100px;
+    background-color: #333333;
+    border-radius: 5px;
+    display: grid;
+    align-content: center;
+}
+.controls {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.controls .topbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.controls .colorCodes {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+}
+.colorCodes .copy img {
+    width: 20px;
+    margin-bottom: -5px;
+}
+.colorCodes .copy:hover {
+    cursor: pointer;
+}
+
+.hex-input-area {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    max-width: 150px;
+    margin: 0 auto 40px;
+    gap: 10px;
+}
+.hex-input-area input {
+    padding: 7px 15px;
+    font-size: 18px;
+    text-transform: uppercase;
+    border: 1px solid #dddddd;
+    background-color: rgba(255, 255, 255, 0.7);
+}
+.hex-input-area input:focus {
+    border-color: #0437ed;
+}
+.rgb-slides {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: space-between;
+    gap: 20px;
+}
+.rgb-slides input {
+    width: 100%;
+    margin-top: 5px;
+}
+.rgb-slides label {
+    display: flex;
+    justify-content: space-between;
+}
