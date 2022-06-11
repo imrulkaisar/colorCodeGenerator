@@ -46,6 +46,14 @@ function main(){
     // Generate a New Color
     generateNewColorBtn.addEventListener('click', generateNewColor)
 
+    // Generate a New Color by clicking space bar
+    window.addEventListener('keypress', (e) => {
+        if(e.key === ' '){
+            let color = colorGenerator()
+            printResult(color)
+        }
+    })
+
     // Change value by hex input
     hexInput.addEventListener('input', changeValueByInput)
 
