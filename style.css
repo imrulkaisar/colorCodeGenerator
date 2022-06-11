@@ -121,3 +121,21 @@
     text-align: center;
     color: #333333;
 }
+
+.presets {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.preset-color {
+    height: 40px;
+    border-radius: 3px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid #dddddd;
+}
+
+.preset-color:hover {
+    cursor: pointer;
+}

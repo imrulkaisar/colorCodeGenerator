@@ -30,6 +30,18 @@ let greenValue = document.querySelector('.green .value')
 let blueValue = document.querySelector('.blue .value')
 let presetsArea = document.querySelector('.presets')
 
+let presetColors = [
+    '#1abc9c',
+    '#2ecc71',
+    '#3498db',
+    '#9b59b6',
+    '#34495e',
+    '#f39c12',
+    '#d35400',
+    '#e74c3c',
+    '#ecf0f1',
+    '#95a5a6'
+]
 
 
 // Document Ready function
@@ -48,7 +60,7 @@ function main(){
 
     // Generate a New Color by clicking space bar
     window.addEventListener('keypress', (e) => {
-        if(e.key === ' '){
+        if(e.key === ' ' && e.target.id !== 'hex-input'){
             let color = colorGenerator()
             printResult(color)
         }
@@ -62,9 +74,12 @@ function main(){
     changeBySlider(greenSlider, greenValue)
     changeBySlider(blueSlider, blueValue)
 
-    function changeBySlider(target, print){ 
-        target.addEventListener('input', printResultBySlider)
-    }
+    // Copy preset code 
+    presetsArea.addEventListener('click', copyPresetCode)
+
+    // Save as Preset color
+    savePresetBtn.addEventListener('click', createNewPreset)
+    
 }
 
 // Default Behaviers
@@ -72,6 +87,8 @@ function defaultAction(){
 
     let color = colorGenerator()
     printResult(color)
+
+    createPresets(presetsArea, presetColors)
     
 }
 
@@ -121,6 +138,27 @@ function printResultBySlider(e){
     printResult(rgb)
 }
 
+function changeBySlider(target, print){ 
+    target.addEventListener('input', printResultBySlider)
+}
+
+function copyPresetCode(e){
+    let target = e.target
+    if(target.className === 'preset-color'){
+        let color = target.getAttribute('data-color').toUpperCase()
+        navigator.clipboard.writeText(color)
+        printResult(hexToRgb(color))
+        printMessage(color + ' Copied!')
+    }
+}
+
+function createNewPreset(e){
+    let color = e.target.getAttribute('color-data')
+    let newPreset = createPresetElement(color)
+    presetsArea.appendChild(newPreset)
+    printMessage('Done!')
+}
+
 // DOM functions
 
 /**
@@ -144,6 +182,7 @@ function printResult(color){
 
     root.style.backgroundColor = rgb
     preview.style.backgroundColor = rgb
+    savePresetBtn.setAttribute('color-data', hex)
     hexInput.value = hex
 
     redSlider.value = color.red
@@ -158,22 +197,55 @@ function printResult(color){
 
 }
 
+/**
+ * This function will copy color code
+ * @param {object} selector
+ * @param {string} value 
+ */
 function copyColor(selector, value){
     selector.addEventListener('click', function(){
         navigator.clipboard.writeText(value)
-        message.innerText = value + ' Copied'
-        message.style.opacity = 1
-        setTimeout(function(){
-            message.innerText = ''
-            message.style.opacity = 0
-        }, 1000)
+        printMessage( value + ' Copied!')
     })
 }
 
+function printMessage(text){
+    message.innerText = text
+    message.style.opacity = 1
+    setTimeout(function(){
+        message.innerText = ''
+        message.style.opacity = 0
+    }, 1000)
+}
+
 function inputColors(bg, text){
-    
     hexInput.style.backgroundColor = bg
     hexInput.style.color = text
+}
+
+/**
+ * create a element for color preset
+ * @param {string} color 
+ */
+function createPresetElement(color){
+    let presetElement = document.createElement('div')
+    presetElement.className = 'preset-color'
+    presetElement.style.backgroundColor = color
+    presetElement.setAttribute('data-color', color)
+
+    return presetElement
+}
+
+/**
+ * Display presets into document
+ * @param {object} parent 
+ * @param {array} colors 
+ */
+function createPresets(parent, colors){
+    colors.forEach((value) => {
+        let child = createPresetElement(value)
+        parent.appendChild(child)
+    })
 }
 
 
@@ -226,7 +298,7 @@ function rgbToHex(rgb){
     let numbers = rgb.split('(')[1].split(')')[0].split(',')
     let codes = numbers.map( (value) => {
         let decimal = parseInt(value.trim())
-        return decimal.toString(16).toUpperCase()
+        return makeTwoChar(decimal).toUpperCase()
     })
     return codes[0] + codes[1] + codes[2]
 }
