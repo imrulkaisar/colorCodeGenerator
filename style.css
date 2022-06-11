@@ -139,3 +139,17 @@
 .preset-color:hover {
     cursor: pointer;
 }
+
+@media all and (max-width: 425px){
+    .controls .colorCodes {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+@media all and (max-width: 768px){
+    .container {
+        width: calc(100vw - 50px);
+        margin: 25px 0;
+    }
+}
