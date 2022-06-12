@@ -28,7 +28,10 @@ let blueSlider = document.getElementById('blue')
 let redValue = document.querySelector('.red .value')
 let greenValue = document.querySelector('.green .value')
 let blueValue = document.querySelector('.blue .value')
-let presetsArea = document.querySelector('.presets')
+let presetsArea = document.querySelector('.presets-area')
+let presets = document.querySelector('.presets')
+let customPresets = document.querySelector('.custom-preset')
+let clearPresetColorsBtn = document.getElementById('clear-preset')
 
 let presetColors = [
     '#1abc9c',
@@ -43,6 +46,7 @@ let presetColors = [
     '#95a5a6'
 ]
 
+let customPresetColors = []
 
 // Document Ready function
 
@@ -79,6 +83,14 @@ function main(){
 
     // Save as Preset color
     savePresetBtn.addEventListener('click', createNewPreset)
+
+    // Clear preset colors
+    clearPresetColorsBtn.addEventListener('click', function(){
+        customPresetColors = []
+        localStorage.removeItem('printedColors')
+        removeChild(customPresets)
+        printMessage('Cleared!')
+    })
     
 }
 
@@ -88,7 +100,11 @@ function defaultAction(){
     let color = colorGenerator()
     printResult(color)
 
-    createPresets(presetsArea, presetColors)
+    createPresets(presets, presetColors)
+
+    let printedColors = JSON.parse(localStorage.getItem('printedColors'))
+    createPresets(customPresets, printedColors)
+    customPresetColors.push(...printedColors)
     
 }
 
@@ -156,10 +172,20 @@ function copyPresetCode(e){
 
 function createNewPreset(e){
     let color = e.target.getAttribute('color-data')
-    let newPreset = createPresetElement(color)
-    presetsArea.appendChild(newPreset)
-    printMessage('Done!')
-    playClickSound('./src/click2.mp3')
+    if( !customPresetColors.includes(color) ){
+        removeChild(customPresets)
+        customPresetColors.push(color)
+
+        let last10Colors= customPresetColors.slice(-10)
+        localStorage.setItem('printedColors', JSON.stringify(last10Colors))
+
+        createPresets(customPresets, last10Colors)
+
+        printMessage('Done!')
+        playClickSound('./src/click2.mp3')
+    } else {
+        printMessage('Already added!')
+    }
 }
 
 // DOM functions
@@ -248,10 +274,17 @@ function createPresetElement(color){
 function createPresets(parent, colors){
     colors.forEach((value) => {
         let child = createPresetElement(value)
-        parent.appendChild(child)
+        parent.prepend(child)
     })
 }
 
+function removeChild(parent){
+    let child = parent.lastElementChild; 
+    while (child) {
+        parent.removeChild(child);
+        child = parent.lastElementChild;
+    }
+}
 
 // Util functions
 

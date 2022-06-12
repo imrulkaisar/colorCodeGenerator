@@ -45,6 +45,8 @@
     font-size: 24px;
     font-weight: 500;
     color: #333333;
+    display: flex;
+    justify-content: space-between;
 }
 
 #preview {
@@ -122,11 +124,12 @@
     color: #333333;
 }
 
-.presets {
+.presets,
+.custom-preset {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 5px;
-    margin-top: 10px;
+    margin: 10px 0;
 }
 
 .preset-color {
