@@ -98,6 +98,7 @@ function defaultAction(){
 function generateNewColor(){
     let color = colorGenerator()
     printResult(color)
+    playClickSound('./src/click2.mp3')
 }
 
 
@@ -149,6 +150,7 @@ function copyPresetCode(e){
         navigator.clipboard.writeText(color)
         printResult(hexToRgb(color))
         printMessage(color + ' Copied!')
+        playClickSound('./src/click.wav')
     }
 }
 
@@ -157,6 +159,7 @@ function createNewPreset(e){
     let newPreset = createPresetElement(color)
     presetsArea.appendChild(newPreset)
     printMessage('Done!')
+    playClickSound('./src/click2.mp3')
 }
 
 // DOM functions
@@ -206,6 +209,7 @@ function copyColor(selector, value){
     selector.addEventListener('click', function(){
         navigator.clipboard.writeText(value)
         printMessage( value + ' Copied!')
+        playClickSound('./src/click.wav')
     })
 }
 
@@ -301,4 +305,10 @@ function rgbToHex(rgb){
         return makeTwoChar(decimal).toUpperCase()
     })
     return codes[0] + codes[1] + codes[2]
+}
+
+function playClickSound(src){
+    let file = new Audio(src)
+    file.valume = 0.1;
+    file.play()
 }
