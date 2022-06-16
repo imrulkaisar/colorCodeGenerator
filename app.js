@@ -1,7 +1,7 @@
 /**
  * Project Name: Color Code Generator
  * Live project: https://imrulkaisar.github.io/colorCodeGenerator/ 
- * Author: Imrul Kaisar
+ * @author: Imrul Kaisar
  * Author URL: https://imrulkaisar.com/
  * 
  * Features: 
@@ -13,7 +13,7 @@
  * 6) Save color as a preset
  */
 
-// Global Veriables
+// Global Variables & DOM references 
 let root = document.getElementById('root')
 let generateNewColorBtn = document.getElementById('generateNewColor')
 let preview = document.getElementById('preview')
@@ -33,6 +33,10 @@ let presets = document.querySelector('.presets')
 let customPresets = document.querySelector('.custom-preset')
 let clearPresetColorsBtn = document.getElementById('clear-preset')
 
+/**
+ * Pre-set color codes 
+ * @type {Array<string>}
+ */
 let presetColors = [
     '#1abc9c',
     '#2ecc71',
@@ -46,20 +50,29 @@ let presetColors = [
     '#95a5a6'
 ]
 
+/**
+ * Custom Pre-set color codes - It will be added manually by user 
+ * @type {Array<string>} 
+ */
 let customPresetColors = []
 
-// Document Ready function
+/**
+ * @desc Document Ready function
+ */
 
 window.onload = () => {
     main()
     defaultAction()
 }
 
-// Main Function
-
+/**
+ * @desc Main Function - It will hold all the functions
+ */ 
 function main(){
 
-    // Generate a New Color
+    /**
+     * @desc Clicking on 'Generate a new Color' Button it will Generate a New Color
+     */
     generateNewColorBtn.addEventListener('click', generateNewColor)
 
     // Generate a New Color by clicking space bar
@@ -74,9 +87,9 @@ function main(){
     hexInput.addEventListener('input', changeValueByInput)
 
     // Change value by slider
-    changeBySlider(redSlider, redValue)
-    changeBySlider(greenSlider, greenValue)
-    changeBySlider(blueSlider, blueValue)
+    changeBySlider(redSlider)
+    changeBySlider(greenSlider)
+    changeBySlider(blueSlider)
 
     // Copy preset code 
     presetsArea.addEventListener('click', copyPresetCode)
@@ -85,16 +98,13 @@ function main(){
     savePresetBtn.addEventListener('click', createNewPreset)
 
     // Clear preset colors
-    clearPresetColorsBtn.addEventListener('click', function(){
-        customPresetColors = []
-        localStorage.removeItem('printedColors')
-        removeChild(customPresets)
-        printMessage('Cleared!')
-    })
+    clearPresetColorsBtn.addEventListener('click', clearPresetColors)
     
 }
 
-// Default Behaviers
+/**
+ * @desc Default Behaviors - This function will run when this app will run first time.
+ */
 function defaultAction(){
 
     let color = colorGenerator()
@@ -111,12 +121,19 @@ function defaultAction(){
 
 // Event Listener Function
 
+/**
+ * @desc Generate a new color code and print it on the app with click sound
+ */
 function generateNewColor(){
     let color = colorGenerator()
     printResult(color)
     playClickSound('./src/click2.mp3')
 }
 
+/**
+ * @description Print result by changing/inputting value on Hex input field
+ * @param {Object} e - Event
+ */
 
 function changeValueByInput(e){
     let value = e.target.value
@@ -142,9 +159,13 @@ function changeValueByInput(e){
     }
 }
 
+/**
+ * @desc It will take value from sliders and print the result
+ * @param {object} e - Event
+ */
 function printResultBySlider(e){
     let tarValue = e.target.value
-    print.innerText = tarValue
+    // print.innerText = tarValue
 
     let rgb = {
         red: redSlider.value,
@@ -155,10 +176,22 @@ function printResultBySlider(e){
     printResult(rgb)
 }
 
-function changeBySlider(target, print){ 
+/**
+ * @desc Changing slider value it will update result
+ * @param {Object} target - Dome selector (Range input field) 
+ */
+function changeBySlider(target){ 
     target.addEventListener('input', printResultBySlider)
 }
 
+/**
+ * @desc 
+ * * Copy selected preset's color code to clipboard 
+ * * Update the color code on the app 
+ * * Show "__ Copied" message 
+ * * Play click sound
+ * @param {Object} e - Event
+ */
 function copyPresetCode(e){
     let target = e.target
     if(target.className === 'preset-color'){
@@ -170,6 +203,16 @@ function copyPresetCode(e){
     }
 }
 
+/**
+ * @desc
+ * * Take current color code and push it to customPresetColors array 
+ * *) Slice last 10 color code from customPresetColors array and store it to browser localStorage 
+ * * Create custom preset 
+ * * Show "Done! Message" 
+ * * Play click sound 
+ * * Prevent depilation of same color code
+ * @param {Object} e - Event
+ */
 function createNewPreset(e){
     let color = e.target.getAttribute('color-data')
     if( !customPresetColors.includes(color) ){
@@ -188,19 +231,37 @@ function createNewPreset(e){
     }
 }
 
+/**
+ * @desc
+ * * Make customPresetColors Array empty 
+ * * Remove custom presets from localStorage
+ * * Print "Cleared!" message
+ */
+function clearPresetColors(){
+    customPresetColors = []
+    localStorage.removeItem('printedColors')
+    removeChild(customPresets)
+    printMessage('Cleared!')
+}
+
 // DOM functions
 
 /**
- * This funciton will print values
- * @param {object} color 
+ * @desc This function will print color value
+ * @param {{red: number, green: number, blue: number}} color 
  */
 
 function printResult(color){
 
-    
+    /**
+     * @decs Generate RGB Color code
+     */
     let rgb = `rgb(${color.red}, ${color.green}, ${color.blue})`
+
+    /**
+     * @decs Generate HEX Color code
+     */
     let hex = `#${rgbToHex(rgb)}`
-    // let hex = `#${makeTwoChar(color.red)}${makeTwoChar(color.green)}${makeTwoChar(color.blue)}`.toUpperCase()
 
     
     hexCode.innerHTML = `HEX CODE: ${hex} <span id="copy-hex" class="copy"><img src="./src/copy.png" alt="copy" srcset=""></span>`
@@ -227,9 +288,9 @@ function printResult(color){
 }
 
 /**
- * This function will copy color code
- * @param {object} selector
- * @param {string} value 
+ * @desc This function will copy the selected color code
+ * @param {Object} selector - (DOM) who is holding the color code
+ * @param {string} value - Color Code
  */
 function copyColor(selector, value){
     selector.addEventListener('click', function(){
@@ -239,6 +300,10 @@ function copyColor(selector, value){
     })
 }
 
+/**
+ * @desc Print a message given by argument
+ * @param {string} text - The text need to be printed
+ */
 function printMessage(text){
     message.innerText = text
     message.style.opacity = 1
@@ -248,14 +313,20 @@ function printMessage(text){
     }, 1000)
 }
 
+/**
+ * @desc Change HEX Code input colors
+ * @param {string} bg - (Color Code) Background Color
+ * @param {string} text - (Color Code) Text Color
+ */
 function inputColors(bg, text){
     hexInput.style.backgroundColor = bg
     hexInput.style.color = text
 }
 
 /**
- * create a element for color preset
- * @param {string} color 
+ * @desc Create an element for custom preset color
+ * @param {string} color - (Color Code)
+ * @returns Preset Element
  */
 function createPresetElement(color){
     let presetElement = document.createElement('div')
@@ -267,9 +338,9 @@ function createPresetElement(color){
 }
 
 /**
- * Display presets into document
- * @param {object} parent 
- * @param {array} colors 
+ * @desc Display presets into document
+ * @param {Object} parent - (DOM Object) Selector who holds preset colors
+ * @param {array} colors - Array of color code
  */
 function createPresets(parent, colors){
     colors.forEach((value) => {
@@ -278,6 +349,10 @@ function createPresets(parent, colors){
     })
 }
 
+/**
+ * @desc Remove all DOM children of parent
+ * @param {Object} parent - (DOM Object) Selector who holds preset colors
+ */
 function removeChild(parent){
     let child = parent.lastElementChild; 
     while (child) {
@@ -289,8 +364,8 @@ function removeChild(parent){
 // Util functions
 
 /**
- * Generate a unique color code 
- * @returns {object} 
+ * @desc Generate a unique color code 
+ * @returns {{red: number, green: number, blue: number}} - An object of colors
  */
  function colorGenerator(){
     let red, green, blue
@@ -308,17 +383,34 @@ function removeChild(parent){
     }
 }
 
+/**
+ * @desc 
+ * * Convert decimal to HEX
+ * * Make single character to double character
+ * @param {number} value - Number between (0 - 255)
+ * @returns {number} Two digit HEX number
+ */
 function makeTwoChar(value){
     let char = value.toString(16)
     return char.length === 1 ? `0${char}`:char
 }
 
+/**
+ * @desc Check color code is valid or not
+ * @param {string} color - HEX color code
+ * @returns {boolean}
+ */
 function validColor(color){
     let len = color.length
     let code = color.substring(1)
     return (color[0] === '#' && len === 7 && /^[0-9A-Fa-f]{6}$/i.test(code)) ? true : false
 }
 
+/**
+ * @desc Convert HEX to RGB Object 
+ * @param {string} color - HEX color code
+ * @returns {{red: number, green: number, blue: number}} An object of colors
+ */
 function hexToRgb(color){
     let hex = color.substring(1)
     let red = parseInt(hex.slice(0, 2), 16)
@@ -331,6 +423,11 @@ function hexToRgb(color){
     }
 }
 
+/**
+ * @desc Convert RGB color to HEX Color code
+ * @param {string} rgb - RGB color code
+ * @returns {string} HEX Color code without '#'
+ */
 function rgbToHex(rgb){
     let numbers = rgb.split('(')[1].split(')')[0].split(',')
     let codes = numbers.map( (value) => {
@@ -340,8 +437,12 @@ function rgbToHex(rgb){
     return codes[0] + codes[1] + codes[2]
 }
 
+/**
+ * @desc Pay a sound in volume 20%
+ * @param {*} src - Audio file link
+ */
 function playClickSound(src){
     let file = new Audio(src)
-    file.valume = 0.1;
+    file.volume = 0.2;
     file.play()
 }
